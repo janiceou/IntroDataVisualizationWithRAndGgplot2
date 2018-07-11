@@ -25,11 +25,11 @@ library(ggplot2)
 
 
 # Load Titanic titanicing data for analysis. Open in spreadsheet view.
-titanic <- read.csv("titanic.csv", stringsAsFactors = FALSE)
+titanic <- read.csv("../ggplot2/IntroDataVisualizationWithRAndGgplot2/titanic.csv", stringsAsFactors = FALSE)
 View(titanic)
 
 
-# Set up factors.
+# Set up factors for categorical data
 titanic$Pclass <- as.factor(titanic$Pclass)
 titanic$Survived <- as.factor(titanic$Survived)
 titanic$Sex <- as.factor(titanic$Sex)
@@ -50,19 +50,21 @@ titanic$Embarked <- as.factor(titanic$Embarked)
 #
 # As Survived is a factor (i.e., categorical) variable, a bar chart 
 # is a great visualization to use.
-#
+# 3 variables are reuqired to create this plot: data, aes(axis), layer = bar graph
 ggplot(titanic, aes(x = Survived)) + 
-  geom_bar()
+  geom_bar() 
 
 # If you really want percentages.
+#create a table for this purpose by proportions
 prop.table(table(titanic$Survived))
 
 # Add some customization for labels and theme.
+
 ggplot(titanic, aes(x = Survived)) + 
-  theme_bw() +
+  theme_bw() + #this get rid of the gray colour at the back and turns into white colour
   geom_bar() +
-  labs(y = "Passenger Count",
-       title = "Titanic Survival Rates")
+  labs(y = "Passenger Count", 
+       title = "Titanic Survival Rates") #labels for axis & title
 
 
 #
@@ -70,7 +72,7 @@ ggplot(titanic, aes(x = Survived)) +
 #
 # We can use color to look at two aspects (i.e., dimensions)
 # of the data simultaneously.
-#
+# fill option makes: separate the bar using the Survived categories of 1/0
 ggplot(titanic, aes(x = Sex, fill = Survived)) + 
   theme_bw() +
   geom_bar() +
@@ -80,7 +82,7 @@ ggplot(titanic, aes(x = Sex, fill = Survived)) +
 
 #
 # Third question - What was the survival rate by class of ticket? 
-#
+# x-axis is set to Pclass & survival categories is shown by colour in filled
 ggplot(titanic, aes(x = Pclass, fill = Survived)) + 
   theme_bw() +
   geom_bar() +
@@ -97,7 +99,7 @@ ggplot(titanic, aes(x = Pclass, fill = Survived)) +
 #
 ggplot(titanic, aes(x = Sex, fill = Survived)) + 
   theme_bw() +
-  facet_wrap(~ Pclass) +
+  facet_wrap(~ Pclass) + #visualize the categories by Pclass
   geom_bar() +
   labs(y = "Passenger Count",
        title = "Titanic Survival Rates by Pclass and Sex")
@@ -118,7 +120,7 @@ ggplot(titanic, aes(x = Sex, fill = Survived)) +
 #
 # The histogram is a staple of visualizing numeric data as it very 
 # powerfully communicates the distrubtion of a variable (i.e., column).
-#
+# Warning message: Removed 177 rows containing non-finite values (stat_bin).
 ggplot(titanic, aes(x = Age)) +
   theme_bw() +
   geom_histogram(binwidth = 5) +
@@ -138,7 +140,7 @@ ggplot(titanic, aes(x = Age, fill = Survived)) +
        title = "Titanic Survival Rates by Age")
 
 # Another great visualization for this question is the box-and-whisker 
-# plot.
+# boxplot did not give a lot of information on the age distribution for survival
 ggplot(titanic, aes(x = Survived, y = Age)) +
   theme_bw() +
   geom_boxplot() +
@@ -157,8 +159,8 @@ ggplot(titanic, aes(x = Survived, y = Age)) +
 #
 ggplot(titanic, aes(x = Age, fill = Survived)) +
   theme_bw() +
-  facet_wrap(Sex ~ Pclass) +
-  geom_density(alpha = 0.5) +
+  facet_wrap(Sex ~ Pclass) + #both Sex and Pclass are taken into consideration
+  geom_density(alpha = 0.5) + #alpha = 0.5 -> transparency
   labs(y = "Age",
        x = "Survived",
        title = "Titanic Survival Rates by Age, Pclass and Sex")
